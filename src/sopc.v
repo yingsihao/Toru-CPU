@@ -4,7 +4,7 @@ module sopc(
 	input wire clk,
 	input wire rst
 );
-	wire[`InstAddeBus] inst_addr;
+	wire[`InstAddrBus] inst_addr;
 	wire[`InstBus] inst;
 	wire rom_ce;
 

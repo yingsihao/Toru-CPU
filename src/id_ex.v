@@ -1,31 +1,11 @@
 `include "defines.v"
 
-module sopc(
-	input wire clk,
-	input wire rst
-);
-	wire[`InstAddeBus] inst_addr;
-	wire[`InstBus] inst;
-	wire rom_ce;
-
-	ToruMIPS ToruMIPS0(
-		clk, rst,
-		inst,
-		inst_addr, rom_ce
-	);
-
-	inst_rom inst_rom0(
-		rom_ce, inst_addr,
-		inst
-	);
-endmodule
-
 module id_ex(
 	input wire clk,
 	input wire rst,
 
-	input wire[`AluOpBus] id_aluOp;
-	input wire[`AluSelBus] id_aluSel;
+	input wire[`AluOpBus] id_aluOp,
+	input wire[`AluSelBus] id_aluSel,
 	input wire[`RegBus] id_reg1,
 	input wire[`RegBus] id_reg2,
 	input wire[`RegAddrBus] id_wd,
@@ -55,6 +35,6 @@ module id_ex(
 			ex_wd <= id_wd;
 			ex_wreg <= id_wreg;
 		end
-	end;
+	end
 
 endmodule

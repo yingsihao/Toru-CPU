@@ -1,25 +1,5 @@
 `include "defines.v"
 
-module sopc(
-	input wire clk,
-	input wire rst
-);
-	wire[`InstAddeBus] inst_addr;
-	wire[`InstBus] inst;
-	wire rom_ce;
-
-	ToruMIPS ToruMIPS0(
-		clk, rst,
-		inst,
-		inst_addr, rom_ce
-	);
-
-	inst_rom inst_rom0(
-		rom_ce, inst_addr,
-		inst
-	);
-endmodule
-
 module id(
 	input wire rst,
 	input wire[`InstAddrBus] pc_i,
@@ -49,15 +29,15 @@ module id(
 	always @ (*) begin
 		if (rst == `RstEnable) begin
 			aluOp_o <= `EXE_NOP_OP;
-			aluSel_o <= `EXE_RES_OP;
+			aluSel_o <= `EXE_RES_NOP;
 			wd_o <= `NOPRegAddr;
 			wreg_o <= `WriteDisable;
 			instValid <= `InstValid;
 			reg1_read_o <= 1'b0;
 			reg2_read_o <= 1'b0;
 			reg1_addr_o <= `NOPRegAddr;
-			reg2_addr_o <= `NopRegAddr;
-			imm <= 32h'0;
+			reg2_addr_o <= `NOPRegAddr;
+			imm <= 32'h0;
 		end else begin
 			aluOp_o <= `EXE_NOP_OP;
 			aluSel_o <= `EXE_RES_NOP;
@@ -83,7 +63,7 @@ module id(
 				end
 
 				default : begin
-				end;
+				end
 			endcase
 		end
 	end
