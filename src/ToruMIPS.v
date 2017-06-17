@@ -83,7 +83,7 @@ module ToruMIPS(
 
 	ex ex0(
 		rst,
-		ex_aluOp_i, ex_aluSel_i, ex_reg1_i, ex_reg2_i,ex_wd_i, ex_wreg_i,
+		ex_aluOp_i, ex_aluSel_i, ex_reg1_i, ex_reg2_i, ex_wd_i, ex_wreg_i,
 		ex_wd_o, ex_wreg_o, ex_wdata_o
 	);
 
