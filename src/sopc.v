@@ -1,4 +1,4 @@
-`include "defines.v"
+`include "../src.defines.v"
 
 module sopc(
 	input wire clk,

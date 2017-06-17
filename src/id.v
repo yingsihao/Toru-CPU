@@ -22,6 +22,9 @@ module id(
 );
 
 	wire[5:0] op = inst_i[31:26];
+	wire[4:0] op2 = inst_i[10:6];
+	wire[5:0] op3 = inst_i[5:0];
+	wire[4:0] op4 = inst_i[20:16];
 
 	reg[`RegBus] imm;
 	reg instValid;
@@ -83,7 +86,7 @@ module id(
 	always @ (*) begin
 		if (rst == `RstEnable) begin
 			reg2_o <= `ZeroWord;
-		end else if (reg1_read_o == 1'b1) begin
+		end else if (reg2_read_o == 1'b1) begin
 			reg2_o <= reg2_data_i;
 		end else if (reg2_read_o == 1'b0) begin
 			reg2_o <= imm;
