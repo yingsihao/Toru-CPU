@@ -64,7 +64,7 @@ module ToruMIPS(
 	);
 
 	id id0(
-		rst, id_pc_i, id_inst_i, reg1_data, reg2_data,
+		rst, id_pc_i, id_inst_i, ex_wreg_o, ex_wdata_o, ex_wd_o, mem_wreg_o, mem_wdata_o, mem_wd_o, reg1_data, reg2_data,
 		reg1_read, reg2_read, reg1_addr, reg2_addr,
 		id_aluOp_o, id_aluSel_o, id_reg1_o, id_reg2_o, id_wd_o, id_wreg_o
 	);
