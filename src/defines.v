@@ -35,7 +35,22 @@
 `define EXE_PREF		6'b110011
 `define EXE_SPECIAL_INST	6'b000000
 
-`define EXE_OR_OP		8'b00100101
+`define EXE_AND_OP   	8'b00100100
+`define EXE_OR_OP   	8'b00100101
+`define EXE_XOR_OP  	8'b00100110
+`define EXE_NOR_OP  	8'b00100111
+`define EXE_ANDI_OP 	8'b01011001
+`define EXE_ORI_OP  	8'b01011010
+`define EXE_XORI_OP  	8'b01011011
+`define EXE_LUI_OP  	8'b01011100   
+
+`define EXE_SLL_OP  	8'b01111100
+`define EXE_SLLV_OP  	8'b00000100
+`define EXE_SRL_OP  	8'b00000010
+`define EXE_SRLV_OP  	8'b00000110
+`define EXE_SRA_OP  	8'b00000011
+`define EXE_SRAV_OP  	8'b00000111
+
 `define EXE_NOP_OP		8'b00000000
 
 `define EXE_RES_LOGIC	3'b001
