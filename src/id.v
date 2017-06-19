@@ -130,6 +130,30 @@ module id(
 									reg2_read_o <= 1'b1;
 									instValid <= `InstValid;
 								end
+								`EXE_SLT : begin
+									wreg_o <= `WriteEnable;
+									aluOp_o <= `EXE_SLT_OP;
+									alusel_o <= `EXE_RES_ARITHMETIC;
+									reg1_read_o <= 1'b1;
+									reg2_read_o <= 1'b1;
+									instValid <= `InstValid;
+								end
+								`EXE_ADD : begin
+									wreg_o <= `WriteEnable;
+									aluOp_o <= `EXE_ADD_OP;
+									alusel_o <= `EXE_RES_ARITHMETIC;
+									reg1_read_o <= 1'b1;
+									reg2_read_o <= 1'b1;
+									instValid <= `InstValid;
+								end
+								`EXE_SUB : begin
+									wreg_o <= `WriteEnable;
+									aluOp_o <= `EXE_SUB_OP;
+									alusel_o <= `EXE_RES_ARITHMETIC;
+									reg1_read_o <= 1'b1;
+									reg2_read_o <= 1'b1;
+									instValid <= `InstValid;
+								end
 								default : begin
 								end
 							endcase
@@ -189,6 +213,28 @@ module id(
 					aluSel_o <= `EXE_RES_NOP;
 					reg1_read_o <= 1'b0;
 					reg2_read_o <= 1'b0;
+					instValid <= `InstValid;
+				end
+
+				`EXE_SLTI : begin
+					wreg_o <= `WriteEnable;
+					aluOp_o <= `EXE_SLT_OP;
+					aluSel_o <=  `EXE_RES_ARITHMETIC;
+					reg1_read_o <= 1'b1;
+					reg2_read_o <= 1'b0;
+					imm <= {{16{inst_i[15]}}, inst_i[15:0]};
+					wd_o <= inst_i[20:16];
+					instValid <= `InstValid;
+				end
+
+				`EXE_ADDI : begin
+					wreg_o <= `WriteEnable;
+					aluOp_o <= `EXE_ADDI_OP;
+					aluSel_o <=  `EXE_RES_ARITHMETIC;
+					reg1_read_o <= 1'b1;
+					reg2_read_o <= 1'b0;
+					imm <= {{16{inst_i[15]}}, inst_i[15:0]};
+					wd_o <= inst_i[20:16];
 					instValid <= `InstValid;
 				end
 

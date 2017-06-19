@@ -31,6 +31,12 @@
 `define EXE_SRA			6'b000011
 `define EXE_SRAV		6'b000111
 
+`define EXE_SLT  		6'b101010
+`define EXE_SLTI  		6'b001010
+`define EXE_ADD  		6'b100000
+`define EXE_ADDI  		6'b001000
+`define EXE_SUB  		6'b100010
+
 `define EXE_SYNC		6'b001111
 `define EXE_PREF		6'b110011
 `define EXE_SPECIAL_INST	6'b000000
@@ -51,10 +57,17 @@
 `define EXE_SRA_OP  	8'b00000011
 `define EXE_SRAV_OP  	8'b00000111
 
+`define EXE_SLT_OP  	8'b00101010
+`define EXE_SLTI_OP  	8'b01010111
+`define EXE_ADD_OP  	8'b00100000
+`define EXE_ADDI_OP  	8'b01010101
+`define EXE_SUB_OP  	8'b00100010
+
 `define EXE_NOP_OP		8'b00000000
 
 `define EXE_RES_LOGIC	3'b001
 `define EXE_RES_SHIFT	3'b010
+`define EXE_RES_ARITHMETIC	3'b100
 `define EXE_RES_NOP		3'b000
 
 `define InstAddrBus		31:0

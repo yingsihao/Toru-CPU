@@ -16,6 +16,14 @@ module ex(
 );
 	reg[`RegBus] logicOut;
 	reg[`RegBus] shiftRes;
+	reg[`RegBus] arithmeticRes;
+
+	wire ov_sum;
+	wire reg1_eq_reg2;
+	wire reg1_lt_reg2;
+	wire[`RegBus] reg2_i_mux;
+	wire[`RegBus] reg1_i_not;
+	wire[`RegBus] result_sum;
 
 	always @ (*) begin
 		if (rst == `RstEnable) begin
@@ -62,15 +70,45 @@ module ex(
 		end
 	end
 
+	assign reg2_i_mux = (aluOp_i == `EXE_SUB_OP || aluOp_i == `EXE_SLT_OP) ? (~reg2_i) + 1 : reg2_i;
+	assign result_sum = reg1_i + reg2_i_mux;
+	assign ov_sum = ((!reg1_i[31] && !reg2_i_mux[31]) && result_sum[31]) || ((reg1_i[31] && reg2_i_mux[31]) && (!result_sum[31]));
+	assign reg1_lt_reg2 = ((aluop_i == `EXE_SLT_OP)) ?
+												((reg1_i[31] && !reg2_i[31]) || 
+												(!reg1_i[31] && !reg2_i[31] && result_sum[31]) ||
+			                   					(reg1_i[31] && reg2_i[31] && result_sum[31]))
+			                   				:	(reg1_i < reg2_i);
+  	assign reg1_i_not = ~reg1_i;
+
+  	always @ (*) begin
+  		if (rst == `RstEnable) begin
+  			arithmeticRes <= `ZeroWord;
+  		end else begin
+  			`EXE_SLT_OP : begin
+  				arithmeticRes <= reg1_lt_reg2;
+  			end
+  			`EXE_ADD_OP, `EXE_ADDI_OP, `EXE_SUB_OP : begin
+  				arithmeticRes <= result_sum;
+  			end
+  		end
+  	end
+
 	always @ (*) begin
 		wd_o <= wd_i;
-		wreg_o <= wreg_i;
+		if (((aluOp_i == `EXE_ADD_OP) || (aluOp_i == `EXE_ADDI_OP) || (aluOP_i == `EXE_SUB_OP)) && ov_sum == 1'b1) begin
+			wreg_o <= `WrireDisable;
+		end else begin
+			wreg_o <= wreg_i;
+		end
 		case(aluSel_i)
 			`EXE_RES_LOGIC : begin
 				wdata_o <= logicOut;
 			end
 			`EXE_RES_SHIFT : begin
 				wdata_o <= shiftRes;
+			end
+			`EXE_RES_ARITHMETIC : begin
+				wdata_o <= arithmeticRes;
 			end
 			default : begin
 				wdata_o <= `ZeroWord;
