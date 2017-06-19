@@ -73,7 +73,7 @@ module ex(
 	assign reg2_i_mux = (aluOp_i == `EXE_SUB_OP || aluOp_i == `EXE_SLT_OP) ? (~reg2_i) + 1 : reg2_i;
 	assign result_sum = reg1_i + reg2_i_mux;
 	assign ov_sum = ((!reg1_i[31] && !reg2_i_mux[31]) && result_sum[31]) || ((reg1_i[31] && reg2_i_mux[31]) && (!result_sum[31]));
-	assign reg1_lt_reg2 = ((aluop_i == `EXE_SLT_OP)) ?
+	assign reg1_lt_reg2 = ((aluOp_i == `EXE_SLT_OP)) ?
 												((reg1_i[31] && !reg2_i[31]) || 
 												(!reg1_i[31] && !reg2_i[31] && result_sum[31]) ||
 			                   					(reg1_i[31] && reg2_i[31] && result_sum[31]))
@@ -84,19 +84,21 @@ module ex(
   		if (rst == `RstEnable) begin
   			arithmeticRes <= `ZeroWord;
   		end else begin
-  			`EXE_SLT_OP : begin
-  				arithmeticRes <= reg1_lt_reg2;
-  			end
-  			`EXE_ADD_OP, `EXE_ADDI_OP, `EXE_SUB_OP : begin
-  				arithmeticRes <= result_sum;
-  			end
+  			case (aluOp_i)
+  				`EXE_SLT_OP : begin
+  					arithmeticRes <= reg1_lt_reg2;
+  				end
+  				`EXE_ADD_OP, `EXE_ADDI_OP, `EXE_SUB_OP : begin
+  					arithmeticRes <= result_sum;
+  				end
+  			endcase
   		end
   	end
 
 	always @ (*) begin
 		wd_o <= wd_i;
-		if (((aluOp_i == `EXE_ADD_OP) || (aluOp_i == `EXE_ADDI_OP) || (aluOP_i == `EXE_SUB_OP)) && ov_sum == 1'b1) begin
-			wreg_o <= `WrireDisable;
+		if (((aluOp_i == `EXE_ADD_OP) || (aluOp_i == `EXE_ADDI_OP) || (aluOp_i == `EXE_SUB_OP)) && ov_sum == 1'b1) begin
+			wreg_o <= `WriteDisable;
 		end else begin
 			wreg_o <= wreg_i;
 		end

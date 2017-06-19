@@ -133,7 +133,7 @@ module id(
 								`EXE_SLT : begin
 									wreg_o <= `WriteEnable;
 									aluOp_o <= `EXE_SLT_OP;
-									alusel_o <= `EXE_RES_ARITHMETIC;
+									aluSel_o <= `EXE_RES_ARITHMETIC;
 									reg1_read_o <= 1'b1;
 									reg2_read_o <= 1'b1;
 									instValid <= `InstValid;
@@ -141,7 +141,7 @@ module id(
 								`EXE_ADD : begin
 									wreg_o <= `WriteEnable;
 									aluOp_o <= `EXE_ADD_OP;
-									alusel_o <= `EXE_RES_ARITHMETIC;
+									aluSel_o <= `EXE_RES_ARITHMETIC;
 									reg1_read_o <= 1'b1;
 									reg2_read_o <= 1'b1;
 									instValid <= `InstValid;
@@ -149,7 +149,7 @@ module id(
 								`EXE_SUB : begin
 									wreg_o <= `WriteEnable;
 									aluOp_o <= `EXE_SUB_OP;
-									alusel_o <= `EXE_RES_ARITHMETIC;
+									aluSel_o <= `EXE_RES_ARITHMETIC;
 									reg1_read_o <= 1'b1;
 									reg2_read_o <= 1'b1;
 									instValid <= `InstValid;
