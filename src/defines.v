@@ -13,6 +13,10 @@
 `define False_v			1'b0
 `define ChipEnable		1'b1
 `define ChipDisable		1'b0
+`define Branch			1'b1
+`define NotBranch		1'b0
+`define InDelaySlot		1'b1
+`define NotInDelatSlot	1'b0
 
 `define EXE_ORI			6'b001101
 `define EXE_NOP			6'b000000
@@ -36,6 +40,11 @@
 `define EXE_ADD  		6'b100000
 `define EXE_ADDI  		6'b001000
 `define EXE_SUB  		6'b100010
+
+`define EXE_BEQ			6'b000100
+`define EXE_BNE			6'b000101
+`define EXE_J			6'b000010
+`define EXE_JR			6'b001000
 
 `define EXE_SYNC		6'b001111
 `define EXE_PREF		6'b110011
@@ -68,6 +77,7 @@
 `define EXE_RES_LOGIC	3'b001
 `define EXE_RES_SHIFT	3'b010
 `define EXE_RES_ARITHMETIC	3'b100
+`define EXE_RES_JUMP_BRANCH 3'b110
 `define EXE_RES_NOP		3'b000
 
 `define InstAddrBus		31:0

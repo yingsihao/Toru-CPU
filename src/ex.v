@@ -10,6 +10,9 @@ module ex(
 	input wire[`RegAddrBus] wd_i,
 	input wire wreg_i,
 
+	input wire[`RegBus] link_address_i,
+	input wire is_in_delayslot,
+
 	output reg[`RegAddrBus] wd_o,
 	output reg wreg_o,
 	output reg[`RegBus] wdata_o
@@ -111,6 +114,9 @@ module ex(
 			end
 			`EXE_RES_ARITHMETIC : begin
 				wdata_o <= arithmeticRes;
+			end
+			`EXE_RES_JUMP_BRANCH : begin
+				wdata_o <= link_address_i;
 			end
 			default : begin
 				wdata_o <= `ZeroWord;

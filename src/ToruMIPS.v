@@ -20,6 +20,8 @@ module ToruMIPS(
 	wire[`RegBus] id_reg2_o;
 	wire id_wreg_o;
 	wire[`RegAddrBus] id_wd_o;
+	wire id_is_in_delayslot_o;
+	wire[`RegBus] id_link_address_o;
 
 	wire[`AluOpBus] ex_aluOp_i;
 	wire[`AluSelBus] ex_aluSel_i;
@@ -27,6 +29,8 @@ module ToruMIPS(
 	wire[`RegBus] ex_reg2_i;
 	wire ex_wreg_i;
 	wire[`RegAddrBus] ex_wd_i;
+	wire ex_is_in_delayslot_i;
+	wire[`RegBus] ex_link_address_i;
 
 	wire  ex_wreg_o;
 	wire[`RegAddrBus] ex_wd_o;
@@ -51,8 +55,15 @@ module ToruMIPS(
 	wire[`RegAddrBus] reg1_addr;
 	wire[`RegAddrBus] reg2_addr;
 
+	wire is_in_delayslot_i;
+	wire is_in_delayslot_o;
+	wire next_inst_in_delay_slot_o;
+	wire id_branch_flag_o;
+	wire[`RegBus] branch_target_address;
+
 	pc_reg pc_reg0(
 		clk, rst,
+		id_branch_flag_o, branch_target_address,
 		pc, rom_ce_o
 	);
 
@@ -65,8 +76,14 @@ module ToruMIPS(
 
 	id id0(
 		rst, id_pc_i, id_inst_i, ex_wreg_o, ex_wdata_o, ex_wd_o, mem_wreg_o, mem_wdata_o, mem_wd_o, reg1_data, reg2_data,
+		is_in_delayslot_i,
 		reg1_read, reg2_read, reg1_addr, reg2_addr,
-		id_aluOp_o, id_aluSel_o, id_reg1_o, id_reg2_o, id_wd_o, id_wreg_o
+		id_aluOp_o, id_aluSel_o, id_reg1_o, id_reg2_o, id_wd_o, id_wreg_o,
+		next_inst_in_delayslot_o,
+		id_branch_flag_o,
+		branch_target_address,
+		id_link_address_o,
+		id_is_in_delayslot_o
 	);
 
 	regfile regfile0(
@@ -78,12 +95,15 @@ module ToruMIPS(
 	id_ex id_ex0(
 		clk, rst,
 		id_aluOp_o, id_aluSel_o, id_reg1_o, id_reg2_o, id_wd_o, id_wreg_o,
-		ex_aluOp_i, ex_aluSel_i, ex_reg1_i, ex_reg2_i, ex_wd_i, ex_wreg_i
+		id_link_address_o, id_is_in_delayslot_o, next_inst_in_delayslot_o,
+		ex_aluOp_i, ex_aluSel_i, ex_reg1_i, ex_reg2_i, ex_wd_i, ex_wreg_i,
+		ex_link_address_i, ex_is_in_delay_slot_i, is_in_delayslot_i
 	);
 
 	ex ex0(
 		rst,
 		ex_aluOp_i, ex_aluSel_i, ex_reg1_i, ex_reg2_i, ex_wd_i, ex_wreg_i,
+		ex_link_address_i, ex_is_in_delayslot_i,
 		ex_wd_o, ex_wreg_o, ex_wdata_o
 	);
 
