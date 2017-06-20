@@ -28,7 +28,7 @@ module id(
 	output reg[`RegBus] reg1_o,
 	output reg[`RegBus] reg2_o,
 	output reg[`RegAddrBus] wd_o,
-	output reg wreg_o
+	output reg wreg_o,
 
 	output reg next_inst_in_delayslot_o,
 	output reg branch_flag_o,
@@ -66,7 +66,7 @@ module id(
 			link_addr_o <= `ZeroWord;
 			branch_target_address_o <= `ZeroWord;
 			branch_flag_o <= `NotBranch;
-			next_inst_in_delayslot_o <= `NotInDelatSlot;
+			next_inst_in_delayslot_o <= `NotInDelaySlot;
 		end else begin
 			aluOp_o <= `EXE_NOP_OP;
 			aluSel_o <= `EXE_RES_NOP;
@@ -81,7 +81,7 @@ module id(
 			link_addr_o <= `ZeroWord;
 			branch_target_address_o <= `ZeroWord;
 			branch_flag_o <= `NotBranch;
-			next_inst_in_delayslot_o <= `NotInDelatSlot;
+			next_inst_in_delayslot_o <= `NotInDelaySlot;
 
 			case (op)
 				`EXE_SPECIAL_INST : begin
@@ -183,7 +183,7 @@ module id(
 									reg1_read_o <= 1'b1;
 									reg2_read_o <= 1'b0;
 									link_addr_o <= `ZeroWord;
-									branch_targer_address_o <= reg1_o;
+									branch_target_address_o <= reg1_o;
 									branch_flag_o <= `Branch;
 									next_inst_in_delayslot_o <= `InDelaySlot;
 									instValid <= `InstValid;
@@ -282,7 +282,7 @@ module id(
 					branch_flag_o <= `Branch;
 					next_inst_in_delayslot_o <= `InDelaySlot;
 					instValid <= `InstValid;
-					branch_targer_address_o <= {pc_plus_4[31:28], inst_i[25:0], 2'b00};
+					branch_target_address_o <= {pc_plus_4[31:28], inst_i[25:0], 2'b00};
 				end
 
 				`EXE_BEQ : begin
@@ -293,7 +293,7 @@ module id(
 					reg2_read_o <= 1'b1;
 					instValid <= `InstValid;
 					if (reg1_o == reg2_o) begin
-						branch_targer_address_o <= pc_plus_4 + imm_sll2_signedExt;
+						branch_target_address_o <= pc_plus_4 + imm_sll2_signedExt;
 						branch_flag_o <= `Branch;
 						next_inst_in_delayslot_o <= `InDelaySlot;
 					end
@@ -307,7 +307,7 @@ module id(
 					reg2_read_o <= 1'b1;
 					instValid <= `InstValid;
 					if (reg1_o != reg2_o) begin
-						branch_targer_address_o <= pc_plus_4 + imm_sll2_signedExt;
+						branch_target_address_o <= pc_plus_4 + imm_sll2_signedExt;
 						branch_flag_o <= `Branch;
 						next_inst_in_delayslot_o <= `InDelaySlot;
 					end

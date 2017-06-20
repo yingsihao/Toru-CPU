@@ -16,7 +16,7 @@
 `define Branch			1'b1
 `define NotBranch		1'b0
 `define InDelaySlot		1'b1
-`define NotInDelatSlot	1'b0
+`define NotInDelaySlot	1'b0
 
 `define EXE_ORI			6'b001101
 `define EXE_NOP			6'b000000
@@ -71,6 +71,11 @@
 `define EXE_ADD_OP  	8'b00100000
 `define EXE_ADDI_OP  	8'b01010101
 `define EXE_SUB_OP  	8'b00100010
+
+`define EXE_JR_OP		8'b00001000
+`define EXE_J_OP 		8'b01001111
+`define EXE_BEQ_OP		8'b01010001
+`define EXE_BNE_OP		8'b01010010
 
 `define EXE_NOP_OP		8'b00000000
 

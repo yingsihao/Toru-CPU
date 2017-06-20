@@ -19,7 +19,7 @@ module id_ex(
 	output reg[`RegBus] ex_reg1,
 	output reg[`RegBus] ex_reg2,
 	output reg[`RegAddrBus] ex_wd,
-	output reg ex_wreg
+	output reg ex_wreg,
 	output reg[`RegBus] ex_link_address,
 	output reg ex_is_in_delayslot,
 	output reg is_in_delayslot_o
