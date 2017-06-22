@@ -5,6 +5,8 @@ module id(
 	input wire[`InstAddrBus] pc_i,
 	input wire[`InstBus] inst_i,
 
+	input wire[`AluOpBus] ex_aluOp_i,
+
 	input wire ex_wreg_i,
 	input wire[`RegBus] ex_wdata_i,
 	input wire[`RegAddrBus] ex_wd_i,
@@ -52,8 +54,14 @@ module id(
 	wire[`RegBus] pc_plus_4;
 	wire[`RegBus] imm_sll2_signedExt;
 
+	reg stallreq_for_reg1_loadrelate;
+  	reg stallreq_for_reg2_loadrelate;
+  	wire pre_inst_is_load;
+
 	assign pc_plus_4 = pc_i + 4;
 	assign imm_sll2_signedExt = {{14{inst_i[15]}}, inst_i[15:0], 2'b00};
+	assign stallreq = stallreq_for_reg1_loadrelate | stallreq_for_reg2_loadrelate;
+	assign pre_inst_is_load = ((ex_aluop_i == `EXE_LB_OP) || (ex_aluop_i == `EXE_LW_OP)) ? 1'b1 : 1'b0;
 
 	assign inst_o = inst_i;
 
@@ -397,8 +405,11 @@ module id(
 	end
 
 	always @ (*) begin
+		stallreq_for_reg1_loadrelate <= `NoStop;
 		if (rst == `RstEnable) begin
 			reg1_o <= `ZeroWord;
+		end else if(pre_inst_is_load == 1'b1 && ex_wd_i == reg1_addr_o && reg1_read_o == 1'b1) begin
+		  stallreq_for_reg1_loadrelate <= `Stop;							
 		end else if (reg1_read_o == 1'b1 && ex_wreg_i == 1'b1 && ex_wd_i == reg1_addr_o) begin
 			reg1_o <= ex_wdata_i;
 		end else if (reg1_read_o == 1'b1 && mem_wreg_i == 1'b1 && mem_wd_i == reg1_addr_o) begin
@@ -413,8 +424,11 @@ module id(
 	end
 
 	always @ (*) begin
+		stallreq_for_reg2_loadrelate <= `NoStop;
 		if (rst == `RstEnable) begin
 			reg2_o <= `ZeroWord;
+		end else if(pre_inst_is_load == 1'b1 && ex_wd_i == reg2_addr_o && reg2_read_o == 1'b1) begin
+		  stallreq_for_reg2_loadrelate <= `Stop;			
 		end else if (reg2_read_o == 1'b1 && ex_wreg_i == 1'b1 && ex_wd_i == reg2_addr_o) begin
 			reg2_o <= ex_wdata_i;
 		end else if (reg2_read_o == 1'b1 && mem_wreg_i == 1'b1 && mem_wd_i == reg2_addr_o) begin
