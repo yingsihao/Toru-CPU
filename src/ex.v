@@ -15,7 +15,9 @@ module ex(
 
 	output reg[`RegAddrBus] wd_o,
 	output reg wreg_o,
-	output reg[`RegBus] wdata_o
+	output reg[`RegBus] wdata_o,
+
+	reg stallReq
 );
 	reg[`RegBus] logicOut;
 	reg[`RegBus] shiftRes;
@@ -82,6 +84,10 @@ module ex(
 			                   					(reg1_i[31] && reg2_i[31] && result_sum[31]))
 			                   				:	(reg1_i < reg2_i);
   	assign reg1_i_not = ~reg1_i;
+
+  	always @ (*) begin
+  		stallReq = `NoStop;
+  	end
 
   	always @ (*) begin
   		if (rst == `RstEnable) begin

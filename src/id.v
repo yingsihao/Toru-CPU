@@ -30,6 +30,8 @@ module id(
 	output reg[`RegAddrBus] wd_o,
 	output reg wreg_o,
 
+	output wire stallReq,
+
 	output reg next_inst_in_delayslot_o,
 	output reg branch_flag_o,
 	output reg[`RegBus] branch_target_address_o,

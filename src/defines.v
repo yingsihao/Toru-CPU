@@ -17,6 +17,8 @@
 `define NotBranch		1'b0
 `define InDelaySlot		1'b1
 `define NotInDelaySlot	1'b0
+`define Stop 			1'b1
+`define NoStop 			1'b0
 
 `define EXE_ORI			6'b001101
 `define EXE_NOP			6'b000000
