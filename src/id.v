@@ -321,7 +321,7 @@ module id(
 
 				`EXE_LB : begin
 					wreg_o <= `WriteEnable;
-					aluOp <= `EXE_LB_OP;
+					aluOp_o <= `EXE_LB_OP;
 					aluSel_o <= `EXE_RES_LOAD_STORE;
 					reg1_read_o <= 1'b1;
 					reg2_read_o <= 1'b0;
@@ -331,7 +331,7 @@ module id(
 
 				`EXE_LW : begin
 					wreg_o <= `WriteEnable;
-					aluOp <= `EXE_LW_OP;
+					aluOp_o <= `EXE_LW_OP;
 					aluSel_o <= `EXE_RES_LOAD_STORE;
 					reg1_read_o <= 1'b1;
 					reg2_read_o <= 1'b0;
@@ -341,7 +341,7 @@ module id(
 
 				`EXE_SB : begin
 					wreg_o <= `WriteDisable;
-					aluOp <= `EXE_SB_OP;
+					aluOp_o <= `EXE_SB_OP;
 					aluSel_o <= `EXE_RES_LOAD_STORE;
 					reg1_read_o <= 1'b1;
 					reg2_read_o <= 1'b1;
@@ -351,7 +351,7 @@ module id(
 
 				`EXE_SW : begin
 					wreg_o <= `WriteDisable;
-					aluOp <= `EXE_SE_OP;
+					aluOp_o <= `EXE_SW_OP;
 					aluSel_o <= `EXE_RES_LOAD_STORE;
 					reg1_read_o <= 1'b1;
 					reg2_read_o <= 1'b1;

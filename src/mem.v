@@ -7,7 +7,7 @@ module mem(
 	input wire wreg_i,
 	input wire[`RegBus] wdata_i,
 
-	input wire[`AluOpBus] aluop_i,
+	input wire[`AluOpBus] aluOp_i,
 	input wire[`RegBus] mem_addr_i,
 	input wire[`RegBus] reg2_i,
 	input wire[`RegBus] mem_data_i,

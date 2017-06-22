@@ -19,7 +19,7 @@ module ex_mem(
 	output reg[`RegBus] mem_wdata,
 
 	output reg[`AluOpBus] mem_aluOp,
-	output reg[`RegBis] mem_mem_addr,
+	output reg[`RegBus] mem_mem_addr,
 	output reg[`RegBus] mem_reg2 
 );
 
@@ -28,21 +28,21 @@ module ex_mem(
 			mem_wd <= `NOPRegAddr;
 			mem_wreg <= `WriteDisable;
 			mem_wdata <= `ZeroWord;
-			mem_aluop <= `EXE_NOP_OP;
+			mem_aluOp <= `EXE_NOP_OP;
 			mem_mem_addr <= `ZeroWord;
 			mem_reg2 <= `ZeroWord;	
 		end else if (stall[3] == `Stop && stall[4] == `NoStop) begin
 			mem_wd <= `NOPRegAddr;
 			mem_wreg <= `WriteDisable;
 			mem_wdata <= `ZeroWord;
-			mem_aluop <= `EXE_NOP_OP;
+			mem_aluOp <= `EXE_NOP_OP;
 			mem_mem_addr <= `ZeroWord;
 			mem_reg2 <= `ZeroWord;	
 		end else if (stall[3] == `NoStop) begin
 			mem_wd <= ex_wd;
 			mem_wreg <= ex_wreg;
 			mem_wdata <= ex_wdata;
-			mem_aluop <= ex_aluop;
+			mem_aluOp <= ex_aluOp;
 			mem_mem_addr <= ex_mem_addr;
 			mem_reg2 <= ex_reg2;
 		end
