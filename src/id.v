@@ -30,6 +30,8 @@ module id(
 	output reg[`RegAddrBus] wd_o,
 	output reg wreg_o,
 
+	output wire[`RegBus] inst_o,
+
 	output wire stallReq,
 
 	output reg next_inst_in_delayslot_o,
@@ -52,6 +54,8 @@ module id(
 
 	assign pc_plus_4 = pc_i + 4;
 	assign imm_sll2_signedExt = {{14{inst_i[15]}}, inst_i[15:0], 2'b00};
+
+	assign inst_o = inst_i;
 
 	always @ (*) begin
 		if (rst == `RstEnable) begin
@@ -313,6 +317,46 @@ module id(
 						branch_flag_o <= `Branch;
 						next_inst_in_delayslot_o <= `InDelaySlot;
 					end
+				end
+
+				`EXE_LB : begin
+					wreg_o <= `WriteEnable;
+					aluOp <= `EXE_LB_OP;
+					aluSel_o <= `EXE_RES_LOAD_STORE;
+					reg1_read_o <= 1'b1;
+					reg2_read_o <= 1'b0;
+					wd_o <= inst_i[20:16];
+					instValid <= `InstValid;
+				end
+
+				`EXE_LW : begin
+					wreg_o <= `WriteEnable;
+					aluOp <= `EXE_LW_OP;
+					aluSel_o <= `EXE_RES_LOAD_STORE;
+					reg1_read_o <= 1'b1;
+					reg2_read_o <= 1'b0;
+					wd_o <= inst_i[20:16];
+					instValid <= `InstValid;
+				end
+
+				`EXE_SB : begin
+					wreg_o <= `WriteDisable;
+					aluOp <= `EXE_SB_OP;
+					aluSel_o <= `EXE_RES_LOAD_STORE;
+					reg1_read_o <= 1'b1;
+					reg2_read_o <= 1'b1;
+					wd_o <= inst_i[20:16];
+					instValid <= `InstValid;
+				end
+
+				`EXE_SW : begin
+					wreg_o <= `WriteDisable;
+					aluOp <= `EXE_SE_OP;
+					aluSel_o <= `EXE_RES_LOAD_STORE;
+					reg1_read_o <= 1'b1;
+					reg2_read_o <= 1'b1;
+					wd_o <= inst_i[20:16];
+					instValid <= `InstValid;
 				end
 
 				default : begin

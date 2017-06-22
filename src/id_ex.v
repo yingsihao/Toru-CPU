@@ -15,6 +15,7 @@ module id_ex(
 	input wire[`RegBus] id_link_address,
 	input wire id_is_in_delayslot,
 	input wire next_inst_in_delayslot_i,
+	input wire[`RegBus] id_inst,
 
 	output reg[`AluOpBus] ex_aluOp,
 	output reg[`AluSelBus] ex_aluSel,
@@ -24,7 +25,8 @@ module id_ex(
 	output reg ex_wreg,
 	output reg[`RegBus] ex_link_address,
 	output reg ex_is_in_delayslot,
-	output reg is_in_delayslot_o
+	output reg is_in_delayslot_o,
+	output reg[`RegBus] ex_inst
 );
 
 	always @ (posedge clk) begin
@@ -38,6 +40,7 @@ module id_ex(
 			ex_link_address <= `ZeroWord;
 			ex_is_in_delayslot <= `NotInDelaySlot;
 			is_in_delayslot_o <= `NotInDelaySlot;
+			ex_inst <= `ZeroWord;
 		end else if (stall[2] == `Stop && stall[3] == `NoStop) begin
 			ex_aluOp <= `EXE_NOP_OP;
 			ex_aluSel <= `EXE_RES_NOP;
@@ -47,6 +50,7 @@ module id_ex(
 			ex_wreg <= `WriteDisable;
 			ex_link_address <= `ZeroWord;
 			ex_is_in_delayslot <= `NotInDelaySlot;
+			ex_inst <= `ZeroWord;
 		end else if (stall[2] == `NoStop) begin
 			ex_aluOp <= id_aluOp;
 			ex_aluSel <= id_aluSel;
@@ -57,6 +61,7 @@ module id_ex(
 			ex_link_address <= id_link_address;
 			ex_is_in_delayslot <= id_is_in_delayslot;
 	    	is_in_delayslot_o <= next_inst_in_delayslot_i;
+	    	ex_inst <= id_inst;
 		end
 	end
 

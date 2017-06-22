@@ -9,6 +9,7 @@ module ex(
 	input wire[`RegBus] reg2_i,
 	input wire[`RegAddrBus] wd_i,
 	input wire wreg_i,
+	input wire[`RegBus] inst_i,
 
 	input wire[`RegBus] link_address_i,
 	input wire is_in_delayslot,
@@ -16,6 +17,10 @@ module ex(
 	output reg[`RegAddrBus] wd_o,
 	output reg wreg_o,
 	output reg[`RegBus] wdata_o,
+
+	output wire[`AluOpBus] aluOp_o,
+	output wire[`RegBus] mem_addr_o,
+	output wire[`RegBus] reg2_o,
 
 	reg stallReq
 );
@@ -29,6 +34,10 @@ module ex(
 	wire[`RegBus] reg2_i_mux;
 	wire[`RegBus] reg1_i_not;
 	wire[`RegBus] result_sum;
+
+	assign aluOp_o = aluOp_i;
+	assign mem_addr_o = reg1_i + {{16{inst_i[15]}}, inst_i[15:0]};
+	assign reg2_o = reg2_i;
 
 	always @ (*) begin
 		if (rst == `RstEnable) begin

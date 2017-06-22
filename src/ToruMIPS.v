@@ -7,7 +7,14 @@ module ToruMIPS(
 	input wire[`RegBus] rom_data_i,
 
 	output wire[`RegBus] rom_addr_o,
-	output wire rom_ce_o
+	output wire rom_ce_o,
+
+	input wire[`RegBus] ram_data_i,
+	output wire[`RegBus] ram_addr_o,
+	output wire[`RegBus] ram_data_o,
+	output wire ram_we_o,
+	output wire[3:0] ram_sel_o,
+	output wire[3:0] ram_ce_o
 );
 
 	wire[`InstAddrBus] pc;
@@ -22,6 +29,7 @@ module ToruMIPS(
 	wire[`RegAddrBus] id_wd_o;
 	wire id_is_in_delayslot_o;
 	wire[`RegBus] id_link_address_o;
+	wire[`RegBus] id_inst_o;
 
 	wire[`AluOpBus] ex_aluOp_i;
 	wire[`AluSelBus] ex_aluSel_i;
@@ -31,14 +39,23 @@ module ToruMIPS(
 	wire[`RegAddrBus] ex_wd_i;
 	wire ex_is_in_delayslot_i;
 	wire[`RegBus] ex_link_address_i;
+	wire[`RegBus] ex_inst_i;
 
 	wire  ex_wreg_o;
 	wire[`RegAddrBus] ex_wd_o;
 	wire[`RegBus] ex_wdata_o;
+	wire[`AluOpBus] ex_aluOp_o;
+	wire[`RegBus] ex_mem_addr_o;
+	wire[`RegBus] ex_reg1_o;
+	wire[`RegBus] ex_reg2_o;
 
 	wire mem_wreg_i;
 	wire[`RegAddrBus] mem_wd_i;
 	wire[`RegBus] mem_wdata_i;
+	wire[`AluOpBus] mem_aluOp_i;
+	wire[`RegBus] mem_mem_addr_i;
+	wire[`RegBus] mem_reg1_i;
+	wire[`RegBus] mem_reg2_i;		
 
 	wire mem_wreg_o;
 	wire[`RegAddrBus] mem_wd_o;
@@ -84,6 +101,7 @@ module ToruMIPS(
 		is_in_delayslot_i,
 		reg1_read, reg2_read, reg1_addr, reg2_addr,
 		id_aluOp_o, id_aluSel_o, id_reg1_o, id_reg2_o, id_wd_o, id_wreg_o,
+		id_inst_o,
 		stallReq_from_id,
 		next_inst_in_delayslot_o,
 		id_branch_flag_o,
@@ -103,15 +121,19 @@ module ToruMIPS(
 		stall,
 		id_aluOp_o, id_aluSel_o, id_reg1_o, id_reg2_o, id_wd_o, id_wreg_o,
 		id_link_address_o, id_is_in_delayslot_o, next_inst_in_delayslot_o,
+		id_inst_o,
 		ex_aluOp_i, ex_aluSel_i, ex_reg1_i, ex_reg2_i, ex_wd_i, ex_wreg_i,
-		ex_link_address_i, ex_is_in_delay_slot_i, is_in_delayslot_i
+		ex_link_address_i, ex_is_in_delay_slot_i, is_in_delayslot_i,
+		ex_inst_i
 	);
 
 	ex ex0(
 		rst,
 		ex_aluOp_i, ex_aluSel_i, ex_reg1_i, ex_reg2_i, ex_wd_i, ex_wreg_i,
+		ex_inst_i,
 		ex_link_address_i, ex_is_in_delayslot_i,
 		ex_wd_o, ex_wreg_o, ex_wdata_o,
+		ex_aluOp_o, ex_mem_addr_o, ex_reg2_o,
 		stallReq_from_ex
 	);
 
@@ -119,13 +141,17 @@ module ToruMIPS(
 		clk, rst,
 		stall,
 		ex_wd_o, ex_wreg_o, ex_wdata_o,
+		ex_aluOp_o, ex_mem_addr_o, ex_reg2_o,
 		mem_wd_i, mem_wreg_i, mem_wdata_i,
+		mem_aluOp_i, mem_mem_addr_i, mem_reg2_i
 	);
 
 	mem mem0(
 		rst,
 		mem_wd_i, mem_wreg_i, mem_wdata_i,
-		mem_wd_o, mem_wreg_o, mem_wdata_o
+		mem_aluOp_i, mem_mem_addr_i, mem_reg2_i, ram_data_i,
+		mem_wd_o, mem_wreg_o, mem_wdata_o,
+		ram_addr_o, ram_we_o, ram_sel_o, ram_data_o, ram_ce_o
 	);
 
 	mem_wb mem_wb_0(
