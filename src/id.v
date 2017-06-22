@@ -61,7 +61,7 @@ module id(
 	assign pc_plus_4 = pc_i + 4;
 	assign imm_sll2_signedExt = {{14{inst_i[15]}}, inst_i[15:0], 2'b00};
 	assign stallreq = stallreq_for_reg1_loadrelate | stallreq_for_reg2_loadrelate;
-	assign pre_inst_is_load = ((ex_aluop_i == `EXE_LB_OP) || (ex_aluop_i == `EXE_LW_OP)) ? 1'b1 : 1'b0;
+	assign pre_inst_is_load = ((ex_aluOp_i == `EXE_LB_OP) || (ex_aluOp_i == `EXE_LW_OP)) ? 1'b1 : 1'b0;
 
 	assign inst_o = inst_i;
 
