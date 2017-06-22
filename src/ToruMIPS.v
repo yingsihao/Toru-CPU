@@ -139,6 +139,6 @@ module ToruMIPS(
 		rst,
 		stallReq_from_id, stallReq_from_ex,
 		stall
-	)
+	);
 
 endmodule
