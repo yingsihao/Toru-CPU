@@ -60,7 +60,7 @@ module id(
 
 	assign pc_plus_4 = pc_i + 4;
 	assign imm_sll2_signedExt = {{14{inst_i[15]}}, inst_i[15:0], 2'b00};
-	assign stallreq = stallreq_for_reg1_loadrelate | stallreq_for_reg2_loadrelate;
+	assign stallReq = stallreq_for_reg1_loadrelate | stallreq_for_reg2_loadrelate;
 	assign pre_inst_is_load = ((ex_aluOp_i == `EXE_LB_OP) || (ex_aluOp_i == `EXE_LW_OP)) ? 1'b1 : 1'b0;
 
 	assign inst_o = inst_i;
@@ -250,7 +250,7 @@ module id(
 					aluSel_o <= `EXE_RES_LOGIC;
 					reg1_read_o <= 1'b1;
 					reg2_read_o <= 1'b0;
-					imm <= {16'h0, inst_i[15:0]};
+					imm <= {inst_i[15:0], 16'h0};
 					wd_o <= inst_i[20:16];
 					instValid <= `InstValid;
 				end
